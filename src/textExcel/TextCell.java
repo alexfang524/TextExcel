@@ -10,23 +10,36 @@ public class TextCell implements Cell {
 
 	@Override
 	public String abbreviatedCellText() {
+		//makes new String so this method won't affect FullCellText when you take out the quotes
+				String abbreviatedWord = "";
+				
+				//gets rid of quotes
+				if(stringWord.contains("\"") == true){
+					abbreviatedWord = stringWord.substring(1, stringWord.length() - 1);
+				}
+				//Reduces string to first 10
+				if(abbreviatedWord.length() > 10){
+					abbreviatedWord = abbreviatedWord.substring(0, 10);
+					return abbreviatedWord;
+				}else{
+					//fills in the spaces so total length will be 10
+					while(abbreviatedWord.length() != 10){
+						abbreviatedWord += " ";
 
-		int strlength = stringWord.length();
-		String abbreviated;
-		if(strlength < 10){
-			abbreviated = stringWord.substring(0);
-			for(int i = 0; i < 10-strlength;i++){
-				abbreviated += " ";
-			}
-		}else{
-			abbreviated = stringWord.substring(0, 10);
-		}
-		return abbreviated;
+					}
+					return abbreviatedWord;
+				}
 	}
+
 
 	@Override
-	public String fullCellText() {
-		return  "\"" + stringWord + "\"";
-	}
+	//returns full string
+		public String fullCellText() {
+			return stringWord;
+		}
+		public void setText(String strcontents){
+			this.stringWord = strcontents;
+		}
+
 
 }

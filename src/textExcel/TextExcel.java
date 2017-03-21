@@ -1,6 +1,7 @@
 package textExcel;
 import java.util.*;
-import java.io.FileNotFoundException;
+import java.io.*;
+
 import java.util.Scanner;
 
 // Update this file with your own code.
@@ -19,7 +20,6 @@ public class TextExcel
 	    }
 	    
 	    
-	    TestsALL.Helper th = new TestsALL.Helper();
-        System.out.println(th.getText());
+	  
 	}
 }

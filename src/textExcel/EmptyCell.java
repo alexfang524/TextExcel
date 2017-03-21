@@ -1,23 +1,16 @@
+
 package textExcel;
 
 public class EmptyCell implements Cell {
-	
-	
-
-	@Override
+	//emptycell returns empty strings for the cells
 	public String abbreviatedCellText() {
-
-		return "";
+		return "          ";
 	}
 
-	@Override
 	public String fullCellText() {
-
 		return "";
 	}
-	
 	public EmptyCell(){
 		
 	}
-
 }
