@@ -1,18 +1,28 @@
-
 package textExcel;
 
-public abstract class RealCell implements Cell {
-	private String userInput = "";
-	public String abbreviatedCellText() {
-		// TODO Auto-generated method stub
-		return null;
+public class RealCell implements Cell {
+
+	private String input;
+	
+	public RealCell(String input) {
+		this.input = input;
 	}
 
-	@Override
+	public String abbreviatedCellText() {
+		
+		return "          ";
+	}
+
+
 	public String fullCellText() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return this.input;
 	}
 	
-
+	public double getDoubleValue(){
+		return Double.parseDouble(input);
+	}
 }
+
+
+

@@ -11,6 +11,7 @@ public class TextExcel
 
 	public static void main(String[] args)
 	{
+		//ask user to continue typing commands until user types quit
 		Spreadsheet textexcell = new Spreadsheet();
 		Scanner scanner = new Scanner (System.in);
 	    String input = scanner.nextLine();
@@ -19,7 +20,5 @@ public class TextExcel
 	    	input = scanner.nextLine();
 	    }
 	    
-	    
-	  
 	}
 }
