@@ -1,32 +1,33 @@
+// Alex Fang
+// APCS 1st
+// 11 April 2017 
+// TextExcel 
 package textExcel;
 
-public class PercentCell extends RealCell implements Cell{
+public class PercentCell implements Cell {
 
-	private String input;
-	public PercentCell (String input){
-		super (input);
-		this.input = input;
+private String string;
+	
+	public PercentCell (String text){
+		this.string = text;
 	}
 	
 	public String abbreviatedCellText() {
-		String abrv;
-		if(input.indexOf(".")<0){
-			abrv = input;
-		}else{
-			abrv = input.substring(0, input.indexOf("."));
+		String abrv = "";
+		if (string.indexOf(".")>0){ 
+			// checks to see if there is a decimal in string
+			abrv = string.substring(0, string.indexOf(".")); 
 		}
-		abrv += "%          ";
-		
+		abrv += "%         "; 
 		return abrv.substring(0,10);
 	}
 
 	public String fullCellText() {
-
-		return GetDoubleValue()+"";
+		return GetValue(string)+"";
 	}
 	
-	public double GetDoubleValue (){
-		return Double.parseDouble(input.substring(0, input.length()-1))/100;
+	public double GetValue (String text){
+		return Double.parseDouble(text.substring(0, text.length()-1))/100; 
 		
 	}
 

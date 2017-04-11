@@ -1,28 +1,26 @@
+// Alex Fang
+// APCS 1st
+// 11 April 2017 
+// TextExcel 
 package textExcel;
 
 public class RealCell implements Cell {
 
-	private String input;
-	
-	public RealCell(String input) {
-		this.input = input;
+	private String string;
+	 
+	public RealCell (String text){
+		this.string = text;
 	}
-
 	public String abbreviatedCellText() {
-		
-		return "          ";
+		return "          ";//10 spaces
 	}
-
 
 	public String fullCellText() {
-
-		return this.input;
+		return string;
 	}
 	
-	public double getDoubleValue(){
-		return Double.parseDouble(input);
+	public double getDoubleValue(String words){
+		return Double.parseDouble(words);
 	}
+
 }
-
-
-

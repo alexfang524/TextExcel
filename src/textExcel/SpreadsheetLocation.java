@@ -1,31 +1,36 @@
+// Alex Fang
+// APCS 1st
+// 11 April 2017 
+// TextExcel 
 package textExcel;
 
-//Update this file with your own code.
 
 public class SpreadsheetLocation implements Location
-{ 
-	
+{
+	private int col;
 	private int row;
-	private int column;
-	
-  @Override
-  public int getRow()
-  {
-  	return this.row;
-  }
+	private String location;
 
-  @Override
-  public int getCol()
-  {
-  	return this.column;
-  }
-  public SpreadsheetLocation(String cellName){
-	//returns the string as an integer for rows
-  	row = Integer.parseInt(cellName.substring(1)) - 1;
-  	////subtract 65 b/c letter A on ascii chart is 65
-  	column = Character.toUpperCase(cellName.charAt(0)) - 65;
-  }
-  
+    public int getRow()
+    {
+    	// get row at this location
+    	row =  Integer.parseInt(location.substring(1));
+        return row-1;
+    }
+
+
+    public int getCol()
+    {
+    	// get the column at this location
+    	this.col = location.charAt(0);
+        return col-65;
+    }
+    
+    public SpreadsheetLocation(String cellName)
+    {
+    	location = cellName.toUpperCase();
+    	
+    	
+    }
 
 }
-

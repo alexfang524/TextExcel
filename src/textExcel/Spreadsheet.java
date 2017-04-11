@@ -1,147 +1,126 @@
+// Alex Fang
+// APCS 1st
+// 11 April 2017 
+// TextExcel 
 package textExcel;
+import static org.junit.Assert.assertEquals;
 
-// Update this file with your own code.
+import java.io.*;
+import java.util.Scanner;
+
 
 public class Spreadsheet implements Grid
 {
+	
+	private Cell [] [] textExcel;
+	public Spreadsheet () {
+		textExcel = new Cell [12] [20];
+		for (int i = 0; i < 12; i++){
+			for (int j = 0; j< 20; j++){
+				textExcel [i][j] = new EmptyCell();
+			}
+		}
+		
+	}
+	
+	
+	public String processCommand(String command) {
+		if (command.length()==0){
+			return "";
+		}	
+		String [] input = command.split(" ",3);
+		if (input[0].toLowerCase().equals("clear")){
+			// clear cell or spreadsheet
+			clearCellSpreadsheet(input);
+			return getGridText();
+		}		
+		else if (input.length > 2){
+			//assign value to either a formula, text, percent or value
+			inspectCell(input);
+			return getGridText();
+		}		
+		else {
+			//cell inspection:returns value at that cell
+			SpreadsheetLocation place = new SpreadsheetLocation(input[0].toUpperCase());
+			return getCell(place).fullCellText();
+		}
+	}
+	
+	public void clearCellSpreadsheet (String [] input){
+		//setting a specific element into a emtpy cell
+		if (input.length > 1){
+			SpreadsheetLocation place = new SpreadsheetLocation(input[1].toUpperCase());
+			textExcel[place.getCol()] [place.getRow()] = new EmptyCell ();
+		}
+		else {
+			//makes entire spreadsheet equal to emtpy cell, so bascially clearing entire spreadsheet
+			for (int j = 0; j < 20; j++ ){
+				for (int k = 0; k < 12; k++){
+					textExcel[k][j] = new EmptyCell();
+				}			
+			}
+		}
 
-	private Cell[][] textExcel = new Cell[getRows()][getCols()];
-	public Spreadsheet() {
-		for(int i = 0;i < getRows();i++){
-			for(int j = 0;j < getCols();j++){
-				textExcel[i][j]=new EmptyCell();
-			}
-		}
 	}
 	
-	public String processCommand(String command){
-		//cell inspection : return value at that cell
-		//assignment to string values : return string of entire sheet
-		//clear command : return string of entire spreadsheet 
-		//clear cell command : return string of spreadsheet as empty cell
-		
-		String[] arr = command.split(" ");
-		
-		//to satisfy checkpoint 1
-		if(command.equals("")){
-			return command;
+	public void inspectCell (String [] input){
+		String userInput = input[2]; 
+		SpreadsheetLocation mysteryInput = new SpreadsheetLocation(input[0].toUpperCase());
+		if (userInput.charAt(0) == 34){ 
+			//if a text cell, replaces the string in the quotations with a textCell
+			String words = input[2].substring(1, (input[2].length()-1));
+			textExcel[mysteryInput.getCol()] [mysteryInput.getRow()] = new TextCell (words);
 		}
-		if(arr.length==0){
-			return command;
+		else if (userInput.substring(userInput.length()-1).equals("%")){ 
+			//if a Percent cell, replaces the string in the quotations with a percent cell
+			textExcel[mysteryInput.getCol()] [mysteryInput.getRow()] = new PercentCell (userInput);	
 		}
-		 
-		//clears entire sheet
-		if(command.equalsIgnoreCase("clear")){ 
-			clearSheet();
-			return getGridText();
+		else if (userInput.substring(userInput.length()-1).equals(")")){ 
+			//if a formula cell, replaces the string in the quotations with a formula cell
+			textExcel[mysteryInput.getCol()] [mysteryInput.getRow()] = new FormulaCell (userInput);	
 		}
-		//cell inspection: returns value at specific cell
-		else if(arr.length==2){
-			String loc= arr[1];
-			SpreadsheetLocation loc1 = new SpreadsheetLocation(loc);
-			textExcel[loc1.getRow()][loc1.getCol()]= new EmptyCell();
-			return getGridText();
-			
+		else { 
+			//if a value cell, replaces the string in the quotations with a value cell
+			textExcel[mysteryInput.getCol()] [mysteryInput.getRow()] = new ValueCell (userInput);	
 		}
-		//cell assignment if "" appear, so you split the string 
-		else if(command.contains("\"")){
-			String[] split = command.split(" = ");
-			String loc= split[0];
-			String input= split[1];
-			SpreadsheetLocation loc1 = new SpreadsheetLocation(loc);
-			
-			if(split.length >= 3){
-				System.out.println(input += " = " + split[2]);
-			}
-			textExcel[loc1.getRow()][loc1.getCol()] = new TextCell(input.substring(1, input.length()-1));
-			return getGridText();
-			
-		}
-		else if(arr.length==1){
-			SpreadsheetLocation locspect= new SpreadsheetLocation(command);
-			return textExcel[locspect.getRow()][locspect.getCol()].fullCellText();
-			
-		}	
+}
 		
-		
-		//clear a specific cell
-		else if(command.equalsIgnoreCase("clear ")){
-			String loca = arr[1];
-			SpreadsheetLocation location= new SpreadsheetLocation(loca);
-			textExcel[location.getRow()][location.getCol()] = new EmptyCell();
-			
-			return getGridText();
-		}	
-		
-		//satisfy checpoint 1
-		else if(arr.length<=3){
-			SpreadsheetLocation loc = new SpreadsheetLocation(command);
-			return textExcel[loc.getRow()][loc.getCol()].fullCellText();
-		}
-		
-		return command;
-		
-	}
-	
-	
-	//sets everything to emptycell to clear
-	public void clearSheet(){
-		for(int i = 0; i < 20; i++){
-			for(int j = 0; j < 12; j++){
-				textExcel[i][j] = new EmptyCell();
-			}
-		}
-	}
-	
-	@Override
+
 	public int getRows()
 	{
-		//returns row as 20
 		return 20;
 	}
 
-	@Override
+
 	public int getCols()
 	{
-		//returns columns as 12
 		return 12;
 	}
 
-	@Override
 	public Cell getCell(Location loc)
 	{
-		return textExcel [loc.getRow()] [loc.getCol()];
-	}
-
-	@Override
-	public String getGridText()
-	{
-		//return a string containing entire sheet grid
-		String topLetter = "   |";
-		for(char i = 'A'; i<='L'; i++){
-			topLetter += i + "         |";
-		}
-		String numbers = "\n";
-		for(int i = 0;i < 20;i++){
-			if(i<9){
-				numbers += (i+1);
-				numbers += "  |";
-				for(int j = 0; j<12;j++){
-					numbers += textExcel[i][j].abbreviatedCellText() + "|";
-				}
-				numbers +="\n";
-			}else{
-				numbers += (i+1);
-				numbers += " |";
-				for(int j = 0; j<12;j++){
-					numbers += textExcel[i][j].abbreviatedCellText() + "|";
-				}
-				numbers +="\n";
-			}
-		}
-		return topLetter + numbers;
-
-	}
+		return textExcel[loc.getCol()] [loc.getRow()];
 		
+	}
 
+	public String getGridText()
+	{		
+		String topLine = "   ";
+		for (char i = 'A'; i <= 'L'; i++){
+			topLine += "|" + i + "         ";	
+		}
+		topLine += "|";
+		String full = "\n";		
+		for (int j = 0; j < 20; j++ ){
+			full += ((j+1) + "   ").substring(0, 3);
+			full += "|";
+			for (int k = 0; k < 12; k++){
+				full += textExcel[k][j].abbreviatedCellText() + "|";
+			}			
+			full += "\n";
+		}
+		return topLine+full;
+	}
+	
+	
 }
