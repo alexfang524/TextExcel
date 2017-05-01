@@ -5,29 +5,19 @@
 
 package textExcel;
 
-public class ValueCell extends RealCell implements Cell{
-
-	private String string;
+public class ValueCell extends RealCell{
 	
-	public ValueCell (String text){ 
-		super (text);
-		this.string = text;
-	}	
-	public String abbreviatedCellText() {
-		String abv = getValue(string)+"";
-		abv += "          ";//10 spaces
-		return abv.substring(0,10);	
-	}
+	private String value;
+	
+	//set num to value and value into the superclass of RealCell
+	public ValueCell(String num){
+		this.value = num;
+		setRealCell(num);
 
-	public String fullCellText() {
-		//changing integer to double
-		if (string.indexOf(".")<0){ 
-			return string;
-		}
-		return getValue(string)+"";
-	}	
-	public double getValue(String text){
-		return super.getDoubleValue(text);
+	}
+	
+	public double getDoubleValue(){
+		return Double.parseDouble(getRealCell());
 	}
 
 }

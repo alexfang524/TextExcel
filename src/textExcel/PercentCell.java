@@ -4,31 +4,22 @@
 // TextExcel 
 package textExcel;
 
-public class PercentCell implements Cell {
-
-private String string;
+public class PercentCell extends RealCell{
 	
-	public PercentCell (String text){
-		this.string = text;
-	}
+	private String percent;
 	
-	public String abbreviatedCellText() {
-		String abrv = "";
-		if (string.indexOf(".")>0){ 
-			// checks to see if there is a decimal in string
-			abrv = string.substring(0, string.indexOf(".")); 
-		}
-		abrv += "%         "; 
-		return abrv.substring(0,10);
-	}
-
-	public String fullCellText() {
-		return GetValue(string)+"";
+	//puts percent into super class of RealCell
+	public PercentCell(String percent){
+		this.percent = percent;
+		setRealCell(percent);
 	}
 	
-	public double GetValue (String text){
-		return Double.parseDouble(text.substring(0, text.length()-1))/100; 
-		
+	//Changes the percentage sign into a decimal
+	public double getDoubleValue(){
+		String returnVal = getRealCell();
+		returnVal = returnVal.substring(0, returnVal.length() - 1);
+		return Double.parseDouble(returnVal) / 100.0;
 	}
-
+	
+	
 }

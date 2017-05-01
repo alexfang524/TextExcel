@@ -3,13 +3,9 @@
 // 11 April 2017 
 // TextExcel 
 package textExcel;
-import java.util.*;
+
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-
-import textExcel.TestsALL.TestLocation;
-
-
 
 public class TextExcel
 {
@@ -17,17 +13,15 @@ public class TextExcel
 	public static void main(String[] args)
 	{
 
-		//ask user to continue typing commands until user types quit	
-			Spreadsheet textExcel = new Spreadsheet ();
-			System.out.println("Enter your input: ");
+		Spreadsheet excel = new Spreadsheet();	
 		
-		    Scanner scanner = new Scanner (System.in);
-		    String input = scanner.nextLine();
-		   
-		    while (!input.equalsIgnoreCase("quit")) {
-		    	System.out.println(textExcel.processCommand(input)); 
-		    	input = scanner.nextLine();
-		    }
-	    
+		Scanner input = new Scanner(System.in);
+		String command = "";
+		while(command.equals("quit") != true){
+			System.out.println("Hi there, Enter Command: ");
+			command = input.nextLine();
+			System.out.println(excel.processCommand(command));
+		}
 	}
+		
 }
